@@ -1,0 +1,34 @@
+﻿body {
+    background-color: black;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+#fejlec {
+    background-color: #160D97;
+    color: white;
+    text-align: center;
+    border: 2px solid #4F44FF;
+    border-radius: 30px;
+    padding: 20px;
+    margin: 40px 60px;
+}
+#profilkep {
+    max-width: 200px;
+}
+.felsorol {
+    background-color: #4F44FF;
+    color: white;
+    border: 2px solid #160D97;
+    border-radius: 30px;
+    padding: 20px;
+    margin: 30px 60px;
+}
+
+a:link{
+    color: aqua;
+}
+a:visited {
+    color: aqua;
+}
+a:hover{
+    color: white;
+}
