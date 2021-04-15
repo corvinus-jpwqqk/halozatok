@@ -10,11 +10,11 @@ function letöltésBefejeződött(d) {
     console.log("Sikeres letöltés");
     console.log(d);
     kérdések = d;
+    kerdesMegjelenites(aktKerdes);
 }
 
 function kerdesMegjelenites(kerdes) {
-    console.log(kerdes);
-    console.log(kérdések);
+    console.log(aktKerdes);
     document.getElementById("kérdés_szöveg").innerHTML = kérdések[kerdes].questionText;
     document.getElementById("válasz1").innerHTML = kérdések[kerdes].answer1;
     document.getElementById("válasz2").innerHTML = kérdések[kerdes].answer2;
