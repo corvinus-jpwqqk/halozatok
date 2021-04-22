@@ -1,26 +1,45 @@
-﻿//var kérdések;
+﻿
 function letoltes() {
-    fetch('/questions.json')
+    fetch('/questions/all')
         .then(response => response.json())
-        .then(data => letöltésBefejeződött(data)
+        .then(data => sorSzamok(data)
+    );
+
+    fetch('/questions/1')
+        .then(response => response.json())
+        .then(data => kerdesMegjelenites(data)
+    );
+}
+
+function sorSzamok(kerdesek) {
+    osszesKerdes = kerdesek.length;
+    console.log("osszes kerdes szama: " + osszesKerdes);
+    console.log('aktKerdesInitial: ' + aktKerdes);
+}
+
+function ujKerdesLetolt(kerdesszam) {
+    console.log("Aktuális kérdés átadva:" + kerdesszam)
+    var fetchroute = "/questions/" + kerdesszam.toString();
+    fetch(fetchroute)
+        .then(response => response.json())
+        .then(data => kerdesMegjelenites(data)
         );
 }
 
-function letöltésBefejeződött(d) {
-    console.log("Sikeres letöltés");
-    console.log(d);
-    kérdések = d;
-    kerdesMegjelenites(aktKerdes);
-}
 
 function kerdesMegjelenites(kerdes) {
-    console.log(aktKerdes);
-    document.getElementById("kérdés_szöveg").innerHTML = kérdések[kerdes].questionText;
-    document.getElementById("válasz1").innerHTML = kérdések[kerdes].answer1;
-    document.getElementById("válasz2").innerHTML = kérdések[kerdes].answer2;
-    document.getElementById("válasz3").innerHTML = kérdések[kerdes].answer3;
-    if (kérdések[kerdes].image != "") {
-        document.getElementById("kép1").src = "https://szoft1.comeback.hu/hajo/" + kérdések[kerdes].image;
+    console.log("Aktuális kérdés: " + aktKerdes);
+    kerdesAll = kerdes;
+    document.getElementById("kérdés_szöveg").innerHTML = kerdes.questionText;
+    document.getElementById("válasz1").innerHTML = kerdes.answer1;
+    document.getElementById("válasz2").innerHTML = kerdes.answer2;
+    document.getElementById("válasz3").innerHTML = kerdes.answer3;
+    if (kerdes.image != "") {
+        document.getElementById("kép1").style.visibility = 'visible';
+        document.getElementById("kép1").src = "https://szoft1.comeback.hu/hajo/" + kerdes.image;
+    }
+    else {
+        document.getElementById("kép1").style.visibility = 'hidden';
     }
     for (var i = 1; i <= 3; i++) {
         document.getElementById("válasz" + i.toString()).style.backgroundColor = "grey";
@@ -28,30 +47,47 @@ function kerdesMegjelenites(kerdes) {
 }
 
 function nextQuestion() {
-    if (aktKerdes == kérdések.length-1) {
-        aktKerdes = 0;
-        kerdesMegjelenites(aktKerdes);
+    if (aktKerdes == 0) {
+        aktKerdes = 2;
+        ujKerdesLetolt(aktKerdes);
+    }
+    else if (aktKerdes == osszesKerdes) {
+        aktKerdes = 1;
+        ujKerdesLetolt(aktKerdes);
     }
     else {
-        kerdesMegjelenites(++aktKerdes);
+        ujKerdesLetolt(++aktKerdes);
     }
 }
 function prevQuestion() {
-    if (aktKerdes != 0) {
-        kerdesMegjelenites(--aktKerdes);
+    if (aktKerdes != 1) {
+        ujKerdesLetolt(--aktKerdes);
     }
     else {
-        aktKerdes = kérdések.length - 1;
-        kerdesMegjelenites(aktKerdes);
+        aktKerdes = osszesKerdes;
+        ujKerdesLetolt(aktKerdes);
     }
 }
 
 function answered(answer) {
-    if (kérdések[aktKerdes].correctAnswer == answer) {
+    if (kerdesAll.correctAnswer == answer) {
         document.getElementById("válasz" + answer.toString()).style.backgroundColor = "green";
     }
     else {
         document.getElementById("válasz" + answer.toString()).style.backgroundColor = "red";
-        document.getElementById("válasz" + kérdések[aktKerdes].correctAnswer.toString()).style.backgroundColor = "green";
+        document.getElementById("válasz" + kerdesAll.correctAnswer.toString()).style.backgroundColor = "green";
     }
 }
+
+function kérdésBetöltés(id) {
+    fetch(`/questions/${id}`)
+        .then(response => {
+            if (!response.ok) {
+                console.error(`Hibás válasz: ${response.status}`)
+            }
+            else {
+                return response.json()
+            }
+        })
+        .then(data => kérdésMegjelenítés(data));
+}    
