@@ -5,11 +5,23 @@ function letoltes() {
         .then(data => sorSzamok(data)
     );
 
-    fetch('/questions/1')
-        .then(response => response.json())
-        .then(data => kerdesMegjelenites(data)
-    );
+    for (var i = 1; i < 8; i++) {
+        fetch('/questions/${i}')
+            .then(response => response.json())
+            .then(data => addToList(data)
+            );
+    }
+    console.log("Gyakoroltatott kérdések: ");
+    for (var i = 0; i < 7; i++) {
+        console.log(gyakKerdesek[i].kerdes);
+    }
+    kerdesMegjelenites(gyakKerdesek[aktKerdes]);
 }
+
+function addToList(kerdes) {
+    gyakKerdesek.push(kerdes);
+}
+
 
 function sorSzamok(kerdesek) {
     osszesKerdes = kerdesek.length;
@@ -51,7 +63,7 @@ function nextQuestion() {
         aktKerdes = 2;
         ujKerdesLetolt(aktKerdes);
     }
-    else if (aktKerdes == osszesKerdes) {
+    else if (aktKerdes == 6) {
         aktKerdes = 1;
         ujKerdesLetolt(aktKerdes);
     }
@@ -64,7 +76,7 @@ function prevQuestion() {
         ujKerdesLetolt(--aktKerdes);
     }
     else {
-        aktKerdes = osszesKerdes;
+        aktKerdes = 6;
         ujKerdesLetolt(aktKerdes);
     }
 }
