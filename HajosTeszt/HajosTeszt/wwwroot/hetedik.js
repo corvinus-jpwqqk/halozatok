@@ -11,15 +11,12 @@ function letoltes() {
             .then(data => addToList(data)
             );
     }
-    console.log("Gyakoroltatott kérdések: ");
-    for (var i = 0; i < 7; i++) {
-        console.log(gyakKerdesek[i].kerdes);
-    }
-    kerdesMegjelenites(gyakKerdesek[aktKerdes]);
 }
 
-function addToList(kerdes) {
-    gyakKerdesek.push(kerdes);
+function addToList(kerdesdata) {
+    console.log(gyakKerdesek.length);
+    gyakKerdesek.push(kerdesdata);
+    console.log(kerdesdata.kerdes);
 }
 
 
