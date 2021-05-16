@@ -33,7 +33,7 @@ function init() {
     if (localStorage.getItem("nextQuestion")) {
         nextQuestion = parseInt(localStorage.getItem("nextQuestion"));
     }
-    if (hotList.length == 0) {
+    if (hotList.length === 0) {
         for (var i = 0; i < questionsInHotList; i++) {
             kérdésBetöltés(nexQuestion, i);
             nexQuestion++;
